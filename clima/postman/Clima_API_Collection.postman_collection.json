@@ -1,0 +1,299 @@
+{
+  "info": {
+    "name": "Taller API REST Clima - Spring Boot + JPA",
+    "description": "Colección completa de endpoints para el Taller Guiado y Taller Complementario de Clima (Puerto 8081).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Ciudades",
+      "item": [
+        {
+          "name": "Crear Ciudad",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Manizales\",\n  \"departamento\": \"Caldas\",\n  \"poblacion\": 458000\n}"
+            },
+            "url": "{{baseUrl}}/api/ciudades"
+          }
+        },
+        {
+          "name": "Listar Ciudades",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ciudades"
+          }
+        },
+        {
+          "name": "Consultar Ciudad por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ciudades/1"
+          }
+        },
+        {
+          "name": "Actualizar Ciudad",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Manizales\",\n  \"departamento\": \"Caldas\",\n  \"poblacion\": 460000\n}"
+            },
+            "url": "{{baseUrl}}/api/ciudades/1"
+          }
+        },
+        {
+          "name": "Temperatura Promedio de Ciudad",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ciudades/1/temperatura-promedio"
+          }
+        },
+        {
+          "name": "Eliminar Ciudad",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/ciudades/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Estaciones y Configuración (1:1 y 1:N)",
+      "item": [
+        {
+          "name": "Crear Estación con Configuración 1:1",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Estación Palogrande\",\n  \"codigo\": \"EST-MZL-01\",\n  \"ubicacion\": \"Campus Palogrande\",\n  \"estado\": \"ACTIVA\",\n  \"ciudadId\": 1,\n  \"configuracion\": {\n    \"intervaloMedicionMinutos\": 10,\n    \"unidadTemperatura\": \"CELSIUS\",\n    \"alturaMetros\": 2150.0,\n    \"calibracionAutomatica\": true\n  }\n}"
+            },
+            "url": "{{baseUrl}}/api/estaciones"
+          }
+        },
+        {
+          "name": "Listar Estaciones de una Ciudad",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/estaciones/ciudad/1"
+          }
+        },
+        {
+          "name": "Listar Todas las Estaciones",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/estaciones"
+          }
+        },
+        {
+          "name": "Actualizar Configuración de Estación",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"intervaloMedicionMinutos\": 5,\n  \"unidadTemperatura\": \"CELSIUS\",\n  \"alturaMetros\": 2153.5,\n  \"calibracionAutomatica\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/estaciones/1/configuracion"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Tipos de Medición",
+      "item": [
+        {
+          "name": "Crear Tipo de Medición",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Temperatura Ambiente\",\n  \"unidad\": \"°C\",\n  \"descripcion\": \"Medición térmica exterior\"\n}"
+            },
+            "url": "{{baseUrl}}/api/tipos-medicion"
+          }
+        },
+        {
+          "name": "Listar Tipos de Medición",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tipos-medicion"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Mediciones / Registros Clima",
+      "item": [
+        {
+          "name": "Registrar Medición (/api/mediciones)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"temperatura\": 31.5,\n  \"humedad\": 65,\n  \"presion\": 1012.3,\n  \"descripcion\": \"Soleado con calor intenso\",\n  \"estacionId\": 1,\n  \"tipoMedicionIds\": [1]\n}"
+            },
+            "url": "{{baseUrl}}/api/mediciones"
+          }
+        },
+        {
+          "name": "Listar Mediciones (/api/registros-clima)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/registros-clima"
+          }
+        },
+        {
+          "name": "Consultar Mediciones de una Estación",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/mediciones/estacion/1"
+          }
+        },
+        {
+          "name": "Consultar Mediciones de una Ciudad",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/mediciones/ciudad/1"
+          }
+        },
+        {
+          "name": "Filtrar por Rango de Fechas",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/mediciones/rango-fechas?inicio=2026-01-01T00:00:00&fin=2026-12-31T23:59:59"
+          }
+        },
+        {
+          "name": "Reto 1: Mediciones con Temperatura > 30°C",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/mediciones/temperatura-alta?min=30.0"
+          }
+        },
+        {
+          "name": "Reto 2: Promedio de Temperatura por Ciudad",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/mediciones/promedio/ciudad/1"
+          }
+        },
+        {
+          "name": "Actualizar Medición",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"temperatura\": 24.0,\n  \"humedad\": 72,\n  \"presion\": 1014.0,\n  \"descripcion\": \"Parcialmente nublado\",\n  \"estacionId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/registros-clima/1"
+          }
+        },
+        {
+          "name": "Eliminar Medición",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/registros-clima/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Roles y Usuarios (N:M)",
+      "item": [
+        {
+          "name": "Crear Rol ADMIN",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"ADMIN\",\n  \"descripcion\": \"Administrador del sistema meteorológico\"\n}"
+            },
+            "url": "{{baseUrl}}/api/roles"
+          }
+        },
+        {
+          "name": "Registrar Usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Miguel\",\n  \"correo\": \"miguel@ucaldas.edu.co\",\n  \"contrasena\": \"segura123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/usuarios"
+          }
+        },
+        {
+          "name": "Asignar Rol a Usuario",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/usuarios/1/roles/1"
+          }
+        },
+        {
+          "name": "Consultar Usuarios por Rol",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/usuarios/rol/ADMIN"
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Alertas Climáticas",
+      "item": [
+        {
+          "name": "Crear Alerta",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descripcion\": \"Ola de calor superior a 30°C\",\n  \"nivel\": \"ALTO\",\n  \"estado\": \"ACTIVA\",\n  \"registroClimaId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/alertas"
+          }
+        },
+        {
+          "name": "Consultar Alertas por Nivel",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/alertas/nivel/ALTO"
+          }
+        },
+        {
+          "name": "Consultar Alertas Activas",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/alertas/activas"
+          }
+        },
+        {
+          "name": "Reto 3: Alertas Activas de una Ciudad",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/alertas/activas/ciudad/1"
+          }
+        }
+      ]
+    }
+  ]
+}
+
